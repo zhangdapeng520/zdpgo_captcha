@@ -9,7 +9,7 @@ func GetDefaultCaptchaConfig(config CaptchaConfig) CaptchaConfig {
 		config.Height = 80
 	}
 	if config.Length == 0 {
-		config.Length = 6
+		config.Length = 4
 	}
 	if config.MaxSkew == 0 {
 		config.MaxSkew = 0.7

@@ -15,21 +15,21 @@ type Captcha struct {
 	Verify   func(id, answer string, clear bool) bool
 }
 
+// Default 使用默认配置生成验证码对象
+func Default() *Captcha {
+	return New(config.CaptchaConfig{})
+}
+
 // New 创建新的验证码对象
-func New(config config.CaptchaConfig) *Captcha {
+func New(cf config.CaptchaConfig) *Captcha {
 	c := Captcha{}
 
 	// 初始化配置
-	if config.DriverType == "" {
-		config.DriverType = "digit" // 数字类型
-	}
-	if config.StoreType == "" {
-		config.StoreType = "memory" // 内存存储
-	}
-	c.config = &config
+	cfg := config.GetDefaultCaptchaConfig(cf)
+	c.config = &cfg
 
 	// 初始化存储器
-	switch config.StoreType {
+	switch c.config.StoreType {
 	case "memory":
 		c.store = base64captcha.DefaultMemStore
 	default:
@@ -37,11 +37,17 @@ func New(config config.CaptchaConfig) *Captcha {
 	}
 
 	// 初始验证码对象
-	switch config.DriverType {
-	case "audio":
+	switch c.config.DriverType {
+	case "audio": // 音频验证码
 		driver := base64captcha.NewDriverAudio(6, "zh")
 		c.captcha = base64captcha.NewCaptcha(driver, c.store)
-	default:
+	case "math": // 数学验证码
+		driver := base64captcha.NewDriverMath(cfg)
+		c.captcha = base64captcha.NewCaptcha(driver, c.store)
+	case "chinese": // 中文验证码
+		driver := base64captcha.NewDriverChinese(cfg)
+		c.captcha = base64captcha.NewCaptcha(driver, c.store)
+	default: // 数字验证码
 		driver := base64captcha.DefaultDriverDigit
 		c.captcha = base64captcha.NewCaptcha(driver, c.store)
 	}

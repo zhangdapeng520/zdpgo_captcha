@@ -2,6 +2,7 @@ package base64captcha
 
 import (
 	"fmt"
+	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
 	"image/color"
 	"math/rand"
 	"strings"
@@ -22,22 +23,23 @@ type DriverMath struct {
 }
 
 //NewDriverMath 创建一个数学驱动
-func NewDriverMath(height int, width int, noiseCount int, showLineOptions int, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverMath {
-	if fontsStorage == nil {
-		fontsStorage = DefaultEmbeddedFonts
+//func NewDriverMath(height int, width int, noiseCount int, showLineOptions int, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverMath {
+func NewDriverMath(cfg config.CaptchaConfig) *DriverMath {
+	bgColor := color.RGBA{
+		R: cfg.BgColor.R,
+		G: cfg.BgColor.G,
+		B: cfg.BgColor.B,
+		A: cfg.BgColor.A,
 	}
-
-	tfs := []*truetype.Font{}
-	for _, fff := range fonts {
-		tf := fontsStorage.LoadFontByName("fonts/" + fff)
-		tfs = append(tfs, tf)
-	}
-
-	if len(tfs) == 0 {
-		tfs = fontsAll
-	}
-
-	return &DriverMath{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, fontsArray: tfs, BgColor: bgColor, Fonts: fonts}
+	fonts := []string{"wqy-microhei.ttc"}
+	return &DriverMath{
+		Height:          cfg.Height,
+		Width:           cfg.Width,
+		NoiseCount:      cfg.NoiseCount,
+		ShowLineOptions: cfg.ShowLineOptions,
+		fontsArray:      fontsAll,
+		BgColor:         &bgColor,
+		Fonts:           fonts}
 }
 
 //ConvertFonts 加载字体

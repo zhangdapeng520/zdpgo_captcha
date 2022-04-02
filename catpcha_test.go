@@ -7,7 +7,11 @@ import (
 )
 
 func getCaptcha() *Captcha {
-	return New(config.CaptchaConfig{})
+	return New(config.CaptchaConfig{
+		//DriverType: "math",
+		//DriverType: "chinese",
+		DriverType: "digit",
+	})
 }
 
 // 测试校验和生成

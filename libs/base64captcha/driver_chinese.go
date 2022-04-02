@@ -1,6 +1,7 @@
 package base64captcha
 
 import (
+	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
 	"image/color"
 	"math/rand"
 	"strings"
@@ -23,22 +24,27 @@ type DriverChinese struct {
 }
 
 //NewDriverChinese 创建中文验证码驱动
-func NewDriverChinese(height int, width int, noiseCount int, showLineOptions int, length int, source string, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverChinese {
-	if fontsStorage == nil {
-		fontsStorage = DefaultEmbeddedFonts
+//func NewDriverChinese(height int, width int, noiseCount int, showLineOptions int, length int, source string, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverChinese {
+func NewDriverChinese(cfg config.CaptchaConfig) *DriverChinese {
+	tfs := []*truetype.Font{
+		DefaultEmbeddedFonts.LoadFontByName("fonts/wqy-microhei.ttc"),
 	}
-
-	tfs := []*truetype.Font{}
-	for _, fff := range fonts {
-		tf := fontsStorage.LoadFontByName("fonts/" + fff)
-		tfs = append(tfs, tf)
+	bgColor := color.RGBA{
+		R: cfg.BgColor.R,
+		G: cfg.BgColor.G,
+		B: cfg.BgColor.B,
+		A: cfg.BgColor.A,
 	}
-
-	if len(tfs) == 0 {
-		tfs = fontsAll
-	}
-
-	return &DriverChinese{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, Length: length, Source: source, BgColor: bgColor, fontsStorage: fontsStorage, fontsArray: tfs}
+	return &DriverChinese{
+		Height:          cfg.Height,
+		Width:           cfg.Width,
+		NoiseCount:      cfg.NoiseCount,
+		ShowLineOptions: cfg.ShowLineOptions,
+		Length:          cfg.Length,
+		Source:          TxtChineseCharaters,
+		BgColor:         &bgColor,
+		fontsStorage:    DefaultEmbeddedFonts,
+		fontsArray:      tfs}
 }
 
 //ConvertFonts 加载字体

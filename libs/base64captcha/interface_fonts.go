@@ -2,11 +2,11 @@ package base64captcha
 
 import "github.com/golang/freetype/truetype"
 
-// FontsStorage interface for working with fonts
+// FontsStorage 字体接口
 type FontsStorage interface {
-	// LoadFontByName returns the font from the storage
+	// LoadFontByName 根据名字加载字体
 	LoadFontByName(name string) *truetype.Font
 
-	// LoadFontsByNames returns multiple fonts from storage
+	// LoadFontsByNames 根据名称列表加载字体列表
 	LoadFontsByNames(assetFontNames []string) []*truetype.Font
 }

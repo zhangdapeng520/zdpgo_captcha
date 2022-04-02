@@ -18,7 +18,7 @@ const (
 	digitFontBlackChar = 1
 )
 
-// ItemDigit digits captcha Struct
+// ItemDigit 数字验证码
 type ItemDigit struct {
 	width  int
 	height int
@@ -26,10 +26,9 @@ type ItemDigit struct {
 	dotSize  int
 	dotCount int
 	maxSkew  float64
-	//rng      siprng
 }
 
-//NewItemDigit create a instance of item-digit
+//NewItemDigit 创建数字验证码实例
 func NewItemDigit(width int, height int, dotCount int, maxSkew float64) *ItemDigit {
 	itemDigit := &ItemDigit{width: width, height: height, dotCount: dotCount, maxSkew: maxSkew}
 	//init image.Paletted
@@ -236,7 +235,7 @@ func max3(x, y, z uint8) (m uint8) {
 	return
 }
 
-// EncodeBinary encodes an image to PNG and returns a byte slice.
+// EncodeBinary 获取图片的二进制字节数组
 func (m *ItemDigit) EncodeBinary() []byte {
 	var buf bytes.Buffer
 	if err := png.Encode(&buf, m.Paletted); err != nil {
@@ -245,14 +244,13 @@ func (m *ItemDigit) EncodeBinary() []byte {
 	return buf.Bytes()
 }
 
-// WriteTo writes captcha character in png format into the given io.Writer, and
-// returns the number of bytes written and an error if any.
+// WriteTo 将数据写入到输出流
 func (m *ItemDigit) WriteTo(w io.Writer) (int64, error) {
 	n, err := w.Write(m.EncodeBinary())
 	return int64(n), err
 }
 
-// EncodeB64string encodes an image to base64 string
+// EncodeB64string 将图片转换为base64编码
 func (m *ItemDigit) EncodeB64string() string {
 	return fmt.Sprintf("data:%s;base64,%s", MimeTypeImage, base64.StdEncoding.EncodeToString(m.EncodeBinary()))
 }

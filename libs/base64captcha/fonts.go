@@ -6,6 +6,7 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
+// 字体列表
 var fontsSimple = DefaultEmbeddedFonts.LoadFontsByNames([]string{
 	"fonts/3Dumb.ttf",
 	"fonts/ApothecaryFont.ttf",
@@ -18,16 +19,17 @@ var fontsSimple = DefaultEmbeddedFonts.LoadFontsByNames([]string{
 	"fonts/chromohv.ttf",
 })
 
-//var fontemoji = loadFontByName("fonts/seguiemj.ttf")
-var fontsAll = append(fontsSimple, fontChinese)
+// 中文字体
 var fontChinese = DefaultEmbeddedFonts.LoadFontByName("fonts/wqy-microhei.ttc")
 
-//randFontFrom choose random font family.选择随机的字体
+// 所有字体
+var fontsAll = append(fontsSimple, fontChinese)
+
+//randFontFrom 随机的选择一种字体
 func randFontFrom(fonts []*truetype.Font) *truetype.Font {
 	fontCount := len(fonts)
 
 	if fontCount == 0 {
-		//loading default fonts
 		fonts = fontsAll
 		fontCount = len(fontsAll)
 	}

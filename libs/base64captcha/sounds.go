@@ -1,7 +1,6 @@
 package base64captcha
 
-// This file has been generated from .wav files using generate.go.
-
+// 生成.wav音频文件
 var waveHeader = []byte{
 	0x52, 0x49, 0x46, 0x46, 0x00, 0x00, 0x00, 0x00, 0x57, 0x41, 0x56, 0x45,
 	0x66, 0x6d, 0x74, 0x20, 0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00,
@@ -10,7 +9,6 @@ var waveHeader = []byte{
 }
 
 // Byte slices contain raw 8 kHz unsigned 8-bit PCM data (without wav header).
-
 var digitSounds = map[string][][]byte{
 	"en": {
 		{ // 0

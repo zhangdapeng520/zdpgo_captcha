@@ -16,29 +16,24 @@ package base64captcha
 
 import "math/rand"
 
-//DriverDigit config for captcha-engine-digit.
+//DriverDigit 数字验证码驱动
 type DriverDigit struct {
-	// Height png height in pixel.
-	Height int
-	// Width Captcha png width in pixel.
-	Width int
-	// DefaultLen Default number of digits in captcha solution.
-	Length int
-	// MaxSkew max absolute skew factor of a single digit.
-	MaxSkew float64
-	// DotCount Number of background circles.
-	DotCount int
+	Height   int     // 图片高度
+	Width    int     // 图片宽度
+	Length   int     // 图片长度
+	MaxSkew  float64 // skew最大
+	DotCount int     // 点的数量
 }
 
-//NewDriverDigit creates a driver of digit
+//NewDriverDigit 创建验证码数字驱动
 func NewDriverDigit(height int, width int, length int, maxSkew float64, dotCount int) *DriverDigit {
 	return &DriverDigit{Height: height, Width: width, Length: length, MaxSkew: maxSkew, DotCount: dotCount}
 }
 
-//DefaultDriverDigit is a default driver of digit
+//DefaultDriverDigit 默认的验证码数字驱动
 var DefaultDriverDigit = NewDriverDigit(80, 240, 5, 0.7, 80)
 
-//GenerateIdQuestionAnswer creates captcha content and answer
+//GenerateIdQuestionAnswer 生成验证码的ID，问题和答案
 func (d *DriverDigit) GenerateIdQuestionAnswer() (id, q, a string) {
 	id = RandomId()
 	digits := randomDigits(d.Length)
@@ -46,7 +41,7 @@ func (d *DriverDigit) GenerateIdQuestionAnswer() (id, q, a string) {
 	return id, a, a
 }
 
-//DrawCaptcha creates digit captcha item
+//DrawCaptcha 创建数字验证码对象
 func (d *DriverDigit) DrawCaptcha(content string) (item Item, err error) {
 	// Initialize PRNG.
 	itemDigit := NewItemDigit(d.Width, d.Height, d.DotCount, d.MaxSkew)

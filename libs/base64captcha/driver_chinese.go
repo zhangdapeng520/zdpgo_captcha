@@ -8,37 +8,21 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
-//DriverChinese is a driver of unicode Chinese characters.
+//DriverChinese 中文驱动
 type DriverChinese struct {
-	//Height png height in pixel.
-	Height int
-	//Width Captcha png width in pixel.
-	Width int
-
-	//NoiseCount text noise count.
-	NoiseCount int
-
-	//ShowLineOptions := OptionShowHollowLine | OptionShowSlimeLine | OptionShowSineLine .
-	ShowLineOptions int
-
-	//Length random string length.
-	Length int
-
-	//Source is a unicode which is the rand string from.
-	Source string
-
-	//BgColor captcha image background color (optional)
-	BgColor *color.RGBA
-
-	//fontsStorage font storage (optional)
-	fontsStorage FontsStorage
-
-	//Fonts loads by name see fonts.go's comment
-	Fonts      []string
-	fontsArray []*truetype.Font
+	Height          int          // png图片像素高度
+	Width           int          // png图片像素宽度
+	NoiseCount      int          // 文本noise数量
+	ShowLineOptions int          // 线条数量
+	Length          int          // 字符长度
+	Source          string       // 字符串源
+	BgColor         *color.RGBA  // 背景颜色
+	fontsStorage    FontsStorage // 字体
+	Fonts           []string     // 字体列表
+	fontsArray      []*truetype.Font
 }
 
-//NewDriverChinese creates a driver of Chinese characters
+//NewDriverChinese 创建中文验证码驱动
 func NewDriverChinese(height int, width int, noiseCount int, showLineOptions int, length int, source string, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverChinese {
 	if fontsStorage == nil {
 		fontsStorage = DefaultEmbeddedFonts
@@ -57,7 +41,7 @@ func NewDriverChinese(height int, width int, noiseCount int, showLineOptions int
 	return &DriverChinese{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, Length: length, Source: source, BgColor: bgColor, fontsStorage: fontsStorage, fontsArray: tfs}
 }
 
-//ConvertFonts loads fonts by names
+//ConvertFonts 加载字体
 func (d *DriverChinese) ConvertFonts() *DriverChinese {
 	if d.fontsStorage == nil {
 		d.fontsStorage = DefaultEmbeddedFonts
@@ -76,7 +60,7 @@ func (d *DriverChinese) ConvertFonts() *DriverChinese {
 	return d
 }
 
-//GenerateIdQuestionAnswer generates captcha content and its answer
+//GenerateIdQuestionAnswer 生成验证码ID，问题和答案
 func (d *DriverChinese) GenerateIdQuestionAnswer() (id, content, answer string) {
 	id = RandomId()
 
@@ -100,7 +84,7 @@ func (d *DriverChinese) GenerateIdQuestionAnswer() (id, content, answer string) 
 	return id, content, content
 }
 
-//DrawCaptcha generates captcha item(image)
+//DrawCaptcha 生成验证码
 func (d *DriverChinese) DrawCaptcha(content string) (item Item, err error) {
 
 	var bgc color.RGBA

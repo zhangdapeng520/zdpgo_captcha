@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-//parseDigitsToString parse randomDigits to normal string
+//parseDigitsToString 解析随机数
 func parseDigitsToString(bytes []byte) string {
 	stringB := make([]byte, len(bytes))
 	for idx, by := range bytes {
@@ -24,14 +24,12 @@ func stringToFakeByte(content string) []byte {
 	return digits
 }
 
-// randomDigits returns a byte slice of the given length containing
-// pseudorandom numbers in range 0-9. The slice can be used as a captcha
-// solution.
+// randomDigits 生成随机数
 func randomDigits(length int) []byte {
 	return randomBytesMod(length, 10)
 }
 
-// randomBytes returns a byte slice of the given length read from CSPRNG.
+// randomBytes 生成随机字节数组
 func randomBytes(length int) (b []byte) {
 	b = make([]byte, length)
 	if _, err := io.ReadFull(rand.Reader, b); err != nil {
@@ -40,8 +38,7 @@ func randomBytes(length int) (b []byte) {
 	return
 }
 
-// randomBytesMod returns a byte slice of the given length, where each byte is
-// a random number modulo mod.
+// randomBytesMod 生成随机字节数组
 func randomBytesMod(length int, mod byte) (b []byte) {
 	if length == 0 {
 		return nil
@@ -68,6 +65,7 @@ func randomBytesMod(length int, mod byte) (b []byte) {
 	}
 }
 
+// 将验证码写入文件
 func itemWriteFile(cap Item, outputDir, fileName, fileExt string) error {
 	filePath := filepath.Join(outputDir, fileName+"."+fileExt)
 	if !pathExists(outputDir) {
@@ -82,6 +80,8 @@ func itemWriteFile(cap Item, outputDir, fileName, fileExt string) error {
 	_, err = cap.WriteTo(file)
 	return err
 }
+
+// 判断路径是否存在
 func pathExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {

@@ -9,32 +9,19 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
-//DriverMath captcha config for captcha math
+//DriverMath 数学验证码
 type DriverMath struct {
-	//Height png height in pixel.
-	Height int
-
-	// Width Captcha png width in pixel.
-	Width int
-
-	//NoiseCount text noise count.
-	NoiseCount int
-
-	//ShowLineOptions := OptionShowHollowLine | OptionShowSlimeLine | OptionShowSineLine .
-	ShowLineOptions int
-
-	//BgColor captcha image background color (optional)
-	BgColor *color.RGBA
-
-	//fontsStorage font storage (optional)
-	fontsStorage FontsStorage
-
-	//Fonts loads by name see fonts.go's comment
-	Fonts      []string
-	fontsArray []*truetype.Font
+	Height          int         // 图片高度
+	Width           int         // 图片宽度
+	NoiseCount      int         // noise数量
+	ShowLineOptions int         // 线条选项
+	BgColor         *color.RGBA // 背景颜色
+	fontsStorage    FontsStorage
+	Fonts           []string
+	fontsArray      []*truetype.Font
 }
 
-//NewDriverMath creates a driver of math
+//NewDriverMath 创建一个数学驱动
 func NewDriverMath(height int, width int, noiseCount int, showLineOptions int, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverMath {
 	if fontsStorage == nil {
 		fontsStorage = DefaultEmbeddedFonts
@@ -53,7 +40,7 @@ func NewDriverMath(height int, width int, noiseCount int, showLineOptions int, b
 	return &DriverMath{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, fontsArray: tfs, BgColor: bgColor, Fonts: fonts}
 }
 
-//ConvertFonts loads fonts from names
+//ConvertFonts 加载字体
 func (d *DriverMath) ConvertFonts() *DriverMath {
 	if d.fontsStorage == nil {
 		d.fontsStorage = DefaultEmbeddedFonts
@@ -72,7 +59,7 @@ func (d *DriverMath) ConvertFonts() *DriverMath {
 	return d
 }
 
-//GenerateIdQuestionAnswer creates id,captcha content and answer
+//GenerateIdQuestionAnswer 创建ID，问题和答案
 func (d *DriverMath) GenerateIdQuestionAnswer() (id, question, answer string) {
 	id = RandomId()
 	operators := []string{"+", "-", "x"}
@@ -100,7 +87,7 @@ func (d *DriverMath) GenerateIdQuestionAnswer() (id, question, answer string) {
 	return
 }
 
-//DrawCaptcha creates math captcha item
+//DrawCaptcha 生成验证码
 func (d *DriverMath) DrawCaptcha(question string) (item Item, err error) {
 	var bgc color.RGBA
 	if d.BgColor != nil {

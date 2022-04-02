@@ -1,20 +1,13 @@
 package base64captcha
 
-// Store An object implementing Store interface can be registered with SetCustomStore
-// function to handle storage and retrieval of captcha ids and solutions for
-// them, replacing the default memory store.
-//
-// It is the responsibility of an object to delete expired and used captchas
-// when necessary (for example, the default memory store collects them in Set
-// method after the certain amount of captchas has been stored.)
+// Store 存储器接口
 type Store interface {
-	// Set sets the digits for the captcha id.
+	// Set 设置验证码答案
 	Set(id string, value string) error
 
-	// Get returns stored digits for the captcha id. Clear indicates
-	// whether the captcha must be deleted from the store.
+	// Get 获取验证码答案
 	Get(id string, clear bool) string
 
-	//Verify captcha's answer directly
+	//Verify 验证验证码答案
 	Verify(id, answer string, clear bool) bool
 }

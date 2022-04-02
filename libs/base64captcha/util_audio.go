@@ -12,8 +12,7 @@ func init() {
 	endingBeepSound = changeSpeed(beepSound, 1.4)
 }
 
-// mixSound mixes src into dst. Dst must have length equal to or greater than
-// src length.
+// mixSound 混合SRC到dst。Dst的长度必须大于或等于src的长度。
 func mixSound(dst, src []byte) {
 	for i, v := range src {
 		av := int(v)
@@ -45,8 +44,7 @@ func setSoundLevel(a []byte, level float64) {
 	}
 }
 
-// changeSpeed returns new PCM bytes from the bytes with the speed and pitch
-// changed to the given value that must be in range [0, x].
+// changeSpeed 从字节中返回新的PCM字节，其速度和间距必须在[0,x]范围内更改为给定值。
 func changeSpeed(a []byte, speed float64) []byte {
 	b := make([]byte, int(math.Floor(float64(len(a))*speed)))
 	var p float64

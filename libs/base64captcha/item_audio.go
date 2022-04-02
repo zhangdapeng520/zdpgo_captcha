@@ -1,7 +1,3 @@
-// Copyright 2017 Eric Zhou. All rights reserved.
-// Use of this source code is governed by a MIT-style
-// license that can be found in the LICENSE file.
-
 package base64captcha
 
 import (
@@ -13,18 +9,14 @@ import (
 	"math/rand"
 )
 
-//ItemAudio captcha-audio-engine return type.
+//ItemAudio 音频二进制流对象
 type ItemAudio struct {
 	answer      string
 	body        *bytes.Buffer
 	digitSounds [][]byte
-	//rng         siprng
 }
 
-// newAudio returns a new audio captcha with the given digits, where each digit
-// must be in range 0-9. Digits are pronounced in the given language. If there
-// are no sounds for the given language, English is used.
-// Possible values for lang are "en", "ja", "ru", "zh".
+// newAudio 创建音频对象
 func newAudio(id string, digits []byte, lang string) *ItemAudio {
 	a := new(ItemAudio)
 
@@ -71,7 +63,7 @@ func newAudio(id string, digits []byte, lang string) *ItemAudio {
 	return a
 }
 
-// encodedLen returns the length of WAV-encoded audio captcha.
+// encodedLen 返回wave编码的音频验证码的长度。
 func (a *ItemAudio) encodedLen() int {
 	return len(waveHeader) + 4 + a.body.Len()
 }
@@ -120,8 +112,7 @@ func (a *ItemAudio) makeWhiteNoise(length int, level uint8) []byte {
 	return noise
 }
 
-// WriteTo writes captcha audio in WAVE format into the given io.Writer, and
-// returns the number of bytes written and an error if any.
+// WriteTo 将WAVE格式的验证码音频写入给定的io。，并返回写入的字节数和一个错误(如果有的话)。
 func (a *ItemAudio) WriteTo(w io.Writer) (n int64, err error) {
 	// Calculate padded length of PCM chunk data.
 	bodyLen := uint32(a.body.Len())
@@ -158,7 +149,7 @@ func (a *ItemAudio) WriteTo(w io.Writer) (n int64, err error) {
 	return
 }
 
-// EncodeB64string encodes a sound to base64 string
+// EncodeB64string 将音频编码为base64字符串
 func (a *ItemAudio) EncodeB64string() string {
 	var buf bytes.Buffer
 	if _, err := a.WriteTo(&buf); err != nil {

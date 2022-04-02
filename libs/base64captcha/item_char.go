@@ -18,7 +18,7 @@ import (
 	"math/rand"
 )
 
-//ItemChar captcha item of unicode characters
+//ItemChar 字符串验证码对象
 type ItemChar struct {
 	bgColor color.Color
 	width   int
@@ -26,7 +26,7 @@ type ItemChar struct {
 	nrgba   *image.NRGBA
 }
 
-//NewItemChar creates a captcha item of characters
+//NewItemChar 创建字符验证码对象
 func NewItemChar(w int, h int, bgColor color.RGBA) *ItemChar {
 	d := ItemChar{width: w, height: h}
 	m := image.NewNRGBA(image.Rect(0, 0, w, h))
@@ -35,7 +35,7 @@ func NewItemChar(w int, h int, bgColor color.RGBA) *ItemChar {
 	return &d
 }
 
-//drawHollowLine draw strong and bold white line.
+//drawHollowLine 绘制白色的线条
 func (item *ItemChar) drawHollowLine() *ItemChar {
 
 	first := item.width / 20
@@ -72,7 +72,7 @@ func (item *ItemChar) drawHollowLine() *ItemChar {
 	return item
 }
 
-//drawSineLine draw a sine line.
+//drawSineLine 绘制sine线条
 func (item *ItemChar) drawSineLine() *ItemChar {
 	var py float64
 
@@ -116,7 +116,7 @@ func (item *ItemChar) drawSineLine() *ItemChar {
 	return item
 }
 
-//drawSlimLine draw n slim-random-color lines.
+//drawSlimLine 绘制slim线条
 func (item *ItemChar) drawSlimLine(num int) *ItemChar {
 
 	first := item.width / 10
@@ -201,8 +201,7 @@ func (item *ItemChar) drawNoise(noiseText string, fonts []*truetype.Font) error 
 	return nil
 }
 
-//drawText draw captcha string to image.把文字写入图像验证码
-
+//drawText 把文字写入图像验证码
 func (item *ItemChar) drawText(text string, fonts []*truetype.Font) error {
 	c := freetype.NewContext()
 	c.SetDPI(imageStringDpi)
@@ -231,7 +230,7 @@ func (item *ItemChar) drawText(text string, fonts []*truetype.Font) error {
 	return nil
 }
 
-//BinaryEncoding encodes an image to PNG and returns a byte slice.
+//BinaryEncoding 返回图片的字节数组
 func (item *ItemChar) BinaryEncoding() []byte {
 	var buf bytes.Buffer
 	if err := png.Encode(&buf, item.nrgba); err != nil {
@@ -240,14 +239,13 @@ func (item *ItemChar) BinaryEncoding() []byte {
 	return buf.Bytes()
 }
 
-// WriteTo writes captcha character in png format into the given io.Writer, and
-// returns the number of bytes written and an error if any.
+// WriteTo 将数据写入到输出流
 func (item *ItemChar) WriteTo(w io.Writer) (int64, error) {
 	n, err := w.Write(item.BinaryEncoding())
 	return int64(n), err
 }
 
-// EncodeB64string encodes an image to base64 string
+// EncodeB64string 将图片转化为base64编码的字符串
 func (item *ItemChar) EncodeB64string() string {
 	return fmt.Sprintf("data:%s;base64,%s", MimeTypeImage, base64.StdEncoding.EncodeToString(item.BinaryEncoding()))
 }

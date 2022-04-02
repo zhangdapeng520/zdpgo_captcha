@@ -8,19 +8,20 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
-//https://en.wikipedia.org/wiki/Unicode_block
+// https://en.wikipedia.org/wiki/Unicode_block
+// 语言字典映射
 var langMap = map[string][]int{
-	//"zh-CN": []int{19968, 40869},
-	"latin":  {0x0000, 0x007f},
-	"zh":     {0x4e00, 0x9fa5},
-	"ko":     {12593, 12686},
-	"jp":     {12449, 12531}, //[]int{12353, 12435}
-	"ru":     {1025, 1169},
-	"th":     {0x0e00, 0x0e7f},
-	"greek":  {0x0380, 0x03ff},
-	"arabic": {0x0600, 0x06ff},
-	"hebrew": {0x0590, 0x05ff},
-	//"emotion": []int{0x1f601, 0x1f64f},
+	"zh-CN":   {19968, 40869},
+	"latin":   {0x0000, 0x007f},
+	"zh":      {0x4e00, 0x9fa5},
+	"ko":      {12593, 12686},
+	"jp":      {12449, 12531}, //[]int{12353, 12435}
+	"ru":      {1025, 1169},
+	"th":      {0x0e00, 0x0e7f},
+	"greek":   {0x0380, 0x03ff},
+	"arabic":  {0x0600, 0x06ff},
+	"hebrew":  {0x0590, 0x05ff},
+	"emotion": {0x1f601, 0x1f64f},
 }
 
 func generateRandomRune(size int, code string) string {
@@ -39,46 +40,32 @@ func generateRandomRune(size int, code string) string {
 	return string(randRune)
 }
 
-//DriverLanguage generates language unicode by lanuage
+//DriverLanguage 语言驱动
 type DriverLanguage struct {
-	// Height png height in pixel.
-	Height int
-	// Width Captcha png width in pixel.
-	Width int
-
-	//NoiseCount text noise count.
-	NoiseCount int
-
-	//ShowLineOptions := OptionShowHollowLine | OptionShowSlimeLine | OptionShowSineLine .
-	ShowLineOptions int
-
-	//Length random string length.
-	Length int
-
-	//BgColor captcha image background color (optional)
-	BgColor *color.RGBA
-
-	//fontsStorage font storage (optional)
-	fontsStorage FontsStorage
-
-	//Fonts loads by name see fonts.go's comment
-	Fonts        []*truetype.Font
-	LanguageCode string
+	Height          int         // 图片高度
+	Width           int         // 图片宽度
+	NoiseCount      int         // noise数量
+	ShowLineOptions int         // 线条
+	Length          int         // 验证码长度
+	BgColor         *color.RGBA // 背景颜色
+	fontsStorage    FontsStorage
+	Fonts           []*truetype.Font // 字体列表
+	LanguageCode    string
 }
 
-//NewDriverLanguage creates a driver
+//NewDriverLanguage 创建一个语言驱动
 func NewDriverLanguage(height int, width int, noiseCount int, showLineOptions int, length int, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []*truetype.Font, languageCode string) *DriverLanguage {
 	return &DriverLanguage{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, Length: length, BgColor: bgColor, fontsStorage: fontsStorage, Fonts: fonts, LanguageCode: languageCode}
 }
 
-//GenerateIdQuestionAnswer creates content and answer
+//GenerateIdQuestionAnswer 创建ID，问题和答案
 func (d *DriverLanguage) GenerateIdQuestionAnswer() (id, content, answer string) {
 	id = RandomId()
 	content = generateRandomRune(d.Length, d.LanguageCode)
 	return id, content, content
 }
 
-//DrawCaptcha creates item
+//DrawCaptcha 绘制验证码
 func (d *DriverLanguage) DrawCaptcha(content string) (item Item, err error) {
 	var bgc color.RGBA
 	if d.BgColor != nil {

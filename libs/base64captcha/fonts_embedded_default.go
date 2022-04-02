@@ -2,9 +2,6 @@ package base64captcha
 
 import "embed"
 
-//go:embed fonts/*.ttf
-//go:embed fonts/*.ttc
-// defaultEmbeddedFontsFS Built-in font storage.
+// 默认的字体
 var defaultEmbeddedFontsFS embed.FS
-
 var DefaultEmbeddedFonts = NewEmbeddedFontsStorage(defaultEmbeddedFontsFS)

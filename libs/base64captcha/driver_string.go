@@ -7,38 +7,21 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
-//DriverChar captcha config for captcha-engine-characters.
+//DriverString 字符串驱动
 type DriverString struct {
-	// Height png height in pixel.
-	Height int
-
-	// Width Captcha png width in pixel.
-	Width int
-
-	//NoiseCount text noise count.
-	NoiseCount int
-
-	//ShowLineOptions := OptionShowHollowLine | OptionShowSlimeLine | OptionShowSineLine .
-	ShowLineOptions int
-
-	//Length random string length.
-	Length int
-
-	//Source is a unicode which is the rand string from.
-	Source string
-
-	//BgColor captcha image background color (optional)
-	BgColor *color.RGBA
-
-	//fontsStorage font storage (optional)
-	fontsStorage FontsStorage
-
-	//Fonts loads by name see fonts.go's comment
-	Fonts      []string
-	fontsArray []*truetype.Font
+	Height          int         // 图片高度
+	Width           int         // 图片宽度
+	NoiseCount      int         // noise数量
+	ShowLineOptions int         // 线条数量
+	Length          int         // 字符串长度
+	Source          string      // 源
+	BgColor         *color.RGBA // 背景颜色
+	fontsStorage    FontsStorage
+	Fonts           []string
+	fontsArray      []*truetype.Font
 }
 
-//NewDriverString creates driver
+//NewDriverString 创建字符串驱动
 func NewDriverString(height int, width int, noiseCount int, showLineOptions int, length int, source string, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverString {
 	if fontsStorage == nil {
 		fontsStorage = DefaultEmbeddedFonts
@@ -57,7 +40,7 @@ func NewDriverString(height int, width int, noiseCount int, showLineOptions int,
 	return &DriverString{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, Length: length, Source: source, BgColor: bgColor, fontsStorage: fontsStorage, fontsArray: tfs}
 }
 
-//ConvertFonts loads fonts by names
+//ConvertFonts 加载字体
 func (d *DriverString) ConvertFonts() *DriverString {
 	if d.fontsStorage == nil {
 		d.fontsStorage = DefaultEmbeddedFonts
@@ -77,14 +60,14 @@ func (d *DriverString) ConvertFonts() *DriverString {
 	return d
 }
 
-//GenerateIdQuestionAnswer creates id,content and answer
+//GenerateIdQuestionAnswer 创建ID，问题和答案
 func (d *DriverString) GenerateIdQuestionAnswer() (id, content, answer string) {
 	id = RandomId()
 	content = RandText(d.Length, d.Source)
 	return id, content, content
 }
 
-//DrawCaptcha draws captcha item
+//DrawCaptcha 创建验证码
 func (d *DriverString) DrawCaptcha(content string) (item Item, err error) {
 
 	var bgc color.RGBA

@@ -11,6 +11,7 @@ type EmbeddedFontsStorage struct {
 	fs embed.FS
 }
 
+// LoadFontByName 根据名字加载字体
 func (s *EmbeddedFontsStorage) LoadFontByName(name string) *truetype.Font {
 	fontBytes, err := s.fs.ReadFile(name)
 	if err != nil {
@@ -26,8 +27,7 @@ func (s *EmbeddedFontsStorage) LoadFontByName(name string) *truetype.Font {
 	return trueTypeFont
 }
 
-// LoadFontsByNames import fonts from dir.
-// make the simple-font(RitaSmith.ttf) the first font of trueTypeFonts.
+// LoadFontsByNames 根据名称列表加载字体列表
 func (s *EmbeddedFontsStorage) LoadFontsByNames(assetFontNames []string) []*truetype.Font {
 	fonts := make([]*truetype.Font, 0)
 	for _, assetName := range assetFontNames {
@@ -37,6 +37,7 @@ func (s *EmbeddedFontsStorage) LoadFontsByNames(assetFontNames []string) []*true
 	return fonts
 }
 
+// NewEmbeddedFontsStorage 创建字体存储器
 func NewEmbeddedFontsStorage(fs embed.FS) *EmbeddedFontsStorage {
 	return &EmbeddedFontsStorage{
 		fs: fs,

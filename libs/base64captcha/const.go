@@ -2,19 +2,15 @@ package base64captcha
 
 const idLen = 20
 
-// idChars are characters allowed in captcha id.
+// idChars 验证码id中允许有字符吗?
 var idChars = []byte(TxtNumbers + TxtAlphabet)
 
 const (
-	imageStringDpi = 72.0
-	//TxtNumbers chacters for numbers.
-	TxtNumbers = "012346789"
-	//TxtAlphabet characters for alphabet.
-	TxtAlphabet = "ABCDEFGHJKMNOQRSTUVXYZabcdefghjkmnoqrstuvxyz"
-	//TxtSimpleCharaters simple numbers and alphabet
-	TxtSimpleCharaters = "13467ertyiadfhjkxcvbnERTYADFGHJKXCVBN"
-	//TxtChineseCharaters makes characters in chinese
-	TxtChineseCharaters = "的一是在不了有和人这中大为上个国我以要他" +
+	imageStringDpi      = 72.0                                           // 图片的DPI
+	TxtNumbers          = "012346789"                                    // 数字字符串
+	TxtAlphabet         = "ABCDEFGHJKMNOQRSTUVXYZabcdefghjkmnoqrstuvxyz" // 英文字符
+	TxtSimpleCharaters  = "13467ertyiadfhjkxcvbnERTYADFGHJKXCVBN"        // 简单的数字和英文字符串
+	TxtChineseCharaters = "的一是在不了有和人这中大为上个国我以要他" +                       // 中文字符
 		"时来用们生到作地于出就分对成会可主发年动" +
 		"同工也能下过子说产种面而方后多定行学法所" +
 		"民得经十三之进着等部度家电力里如水化高自" +
@@ -40,21 +36,13 @@ const (
 		"眼王按格养易置派层片始却专状育厂京识适属" +
 		"圆包火住调满县局照参红细引听该铁价严龙飞"
 
-	//MimeTypeAudio output base64 mine-type.
-	MimeTypeAudio = "audio/wav"
-	//MimeTypeImage output base64 mine-type.
-	MimeTypeImage = "image/png"
-	//Emoji is a source string for randTxt
-	Emoji = "😀😃💯😄🤖😻😅🤣😂🧑🙃😉😊😇😍👴🤩😘😗☺👽♀😙♂😋😛🎨😜🤪😝🤑🤗🤭🤫🤔🤐🤨😐🙉😶😏💗🙄😬🤥😌😪🤤😷🤢🤮🤯😵🤠😎🧐😨😰😱😭😖😡🤬👿☠💀💥💢"
+	MimeTypeAudio = "audio/wav"                                                            // 音频格式
+	MimeTypeImage = "image/png"                                                            // 图片格式
+	Emoji         = "😀😃💯😄🤖😻😅🤣😂🧑🙃😉😊😇😍👴🤩😘😗☺👽♀😙♂😋😛🎨😜🤪😝🤑🤗🤭🤫🤔🤐🤨😐🙉😶😏💗🙄😬🤥😌😪🤤😷🤢🤮🤯😵🤠😎🧐😨😰😱😭😖😡🤬👿☠💀💥💢" // emoji表情
 )
 
-//var cjkFontFamilies = readCJKFonts()
-
 const (
-	//OptionShowHollowLine shows hollow line
-	OptionShowHollowLine = 2
-	//OptionShowSlimeLine shows slime line
-	OptionShowSlimeLine = 4
-	//OptionShowSineLine shows sine line
-	OptionShowSineLine = 8
+	OptionShowHollowLine = 2 // hollow线条数量
+	OptionShowSlimeLine  = 4 // slime线条数量
+	OptionShowSineLine   = 8 // sine线条数量
 )

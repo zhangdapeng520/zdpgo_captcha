@@ -32,6 +32,8 @@ func New(config config.CaptchaConfig) *Captcha {
 	switch config.StoreType {
 	case "memory":
 		c.store = base64captcha.DefaultMemStore
+	default:
+		c.store = base64captcha.DefaultMemStore
 	}
 
 	// 初始验证码对象

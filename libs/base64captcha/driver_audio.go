@@ -4,30 +4,28 @@
 
 package base64captcha
 
-//DriverAudio captcha config for captcha-engine-audio.
+//DriverAudio 音频引擎
 type DriverAudio struct {
-	// Length Default number of digits in captcha solution.
-	Length int
-	// Language possible values for lang are "en", "ja", "ru", "zh".
-	Language string
+	Length   int    // 默认长度
+	Language string // 语言："en", "ja", "ru", "zh".
 }
 
-//DefaultDriverAudio is a default audio driver
-var DefaultDriverAudio = NewDriverAudio(6, "en")
+//DefaultDriverAudio 默认音频驱动
+var DefaultDriverAudio = NewDriverAudio(6, "zh")
 
-//NewDriverAudio creates a driver of audio
+//NewDriverAudio 创建音频驱动
 func NewDriverAudio(length int, language string) *DriverAudio {
 	return &DriverAudio{Length: length, Language: language}
 }
 
-//DrawCaptcha creates audio captcha item
+//DrawCaptcha 创建音频验证码
 func (d *DriverAudio) DrawCaptcha(content string) (item Item, err error) {
 	digits := stringToFakeByte(content)
 	audio := newAudio("", digits, d.Language)
 	return audio, nil
 }
 
-//GenerateIdQuestionAnswer creates id,captcha content and answer
+//GenerateIdQuestionAnswer 创建ID，音频问题，和答案
 func (d *DriverAudio) GenerateIdQuestionAnswer() (id, q, a string) {
 	id = RandomId()
 	digits := randomDigits(d.Length)

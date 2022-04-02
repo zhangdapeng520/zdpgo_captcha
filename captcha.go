@@ -1,50 +1,52 @@
-package captcha
+package zdpgo_captcha
 
 import (
-	"strings"
+	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
+	"github.com/zhangdapeng520/zdpgo_captcha/libs/base64captcha"
 )
 
-// 验证码结构体基本内容
 type Captcha struct {
-	Driver Driver
-	Store  Store
+	store   base64captcha.Store    // 验证码存储对象
+	config  *config.CaptchaConfig  // 配置对象
+	captcha *base64captcha.Captcha //验证码核心对象
+
+	// 方法区
+	Generate func() (id, b64s string, err error)
+	Verify   func(id, answer string, clear bool) bool
 }
 
-// 创建验证码对象
-func NewCaptcha(driver Driver, store Store) *Captcha {
-	return &Captcha{Driver: driver, Store: store}
-}
+// New 创建新的验证码对象
+func New(config config.CaptchaConfig) *Captcha {
+	c := Captcha{}
 
-// 生成随机的ID和验证码图片的base64字符串
-func (c *Captcha) Generate() (id, b64s string, err error) {
-	// 创建ID，内容和答案
-	id, content, answer := c.Driver.GenerateIdQuestionAnswer()
+	// 初始化配置
+	if config.DriverType == "" {
+		config.DriverType = "digit" // 数字类型
+	}
+	if config.StoreType == "" {
+		config.StoreType = "memory" // 内存存储
+	}
+	c.config = &config
 
-	// 绘制图片
-	item, err := c.Driver.DrawCaptcha(content)
-	if err != nil {
-		return "", "", err
+	// 初始化存储器
+	switch config.StoreType {
+	case "memory":
+		c.store = base64captcha.DefaultMemStore
 	}
 
-	// 存储内容
-	err = c.Store.Set(id, answer)
-	if err != nil {
-		return "", "", err
+	// 初始验证码对象
+	switch config.DriverType {
+	case "audio":
+		driver := base64captcha.NewDriverAudio(6, "zh")
+		c.captcha = base64captcha.NewCaptcha(driver, c.store)
+	default:
+		driver := base64captcha.DefaultDriverDigit
+		c.captcha = base64captcha.NewCaptcha(driver, c.store)
 	}
 
-	// 转换为base64编码
-	b64s = item.EncodeB64string()
-	return
-}
+	// 初始化方法
+	c.Generate = c.captcha.Generate
+	c.Verify = c.captcha.Store.Verify
 
-// 校验ID和验证码
-func (c *Captcha) Verify(id, answer string, clear bool) (match bool) {
-	// 获取存储的验证码
-	vv := c.Store.Get(id, clear)
-
-	// 去除空格
-	vv = strings.TrimSpace(vv)
-
-	// 校验
-	return vv == strings.TrimSpace(answer)
+	return &c
 }

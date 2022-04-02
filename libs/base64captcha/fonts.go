@@ -1,9 +1,8 @@
 package base64captcha
 
 import (
-	"math/rand"
-
 	"github.com/golang/freetype/truetype"
+	"math/rand"
 )
 
 // 字体列表

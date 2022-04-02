@@ -1,20 +1,9 @@
-// Copyright 2017 Eric Zhou. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package base64captcha
 
-import "math/rand"
+import (
+	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
+	"math/rand"
+)
 
 //DriverDigit 数字验证码驱动
 type DriverDigit struct {
@@ -26,12 +15,19 @@ type DriverDigit struct {
 }
 
 //NewDriverDigit 创建验证码数字驱动
-func NewDriverDigit(height int, width int, length int, maxSkew float64, dotCount int) *DriverDigit {
-	return &DriverDigit{Height: height, Width: width, Length: length, MaxSkew: maxSkew, DotCount: dotCount}
+func NewDriverDigit(c config.CaptchaConfig) *DriverDigit {
+	cfg := config.GetDefaultCaptchaConfig(c)
+	return &DriverDigit{
+		Height:   cfg.Height,
+		Width:    cfg.Width,
+		Length:   cfg.Length,
+		MaxSkew:  cfg.MaxSkew,
+		DotCount: cfg.DotCount,
+	}
 }
 
 //DefaultDriverDigit 默认的验证码数字驱动
-var DefaultDriverDigit = NewDriverDigit(80, 240, 5, 0.7, 80)
+var DefaultDriverDigit = NewDriverDigit(config.CaptchaConfig{})
 
 //GenerateIdQuestionAnswer 生成验证码的ID，问题和答案
 func (d *DriverDigit) GenerateIdQuestionAnswer() (id, q, a string) {

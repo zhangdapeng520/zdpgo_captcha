@@ -2,8 +2,15 @@ package zdpgo_captcha
 
 import (
 	"container/list"
+	"strings"
 	"sync"
 	"time"
+)
+
+var (
+	GCLimitNumber   = 10240                                     // 创建的验证码数量，用于触发默认存储区使用的垃圾收集。
+	Expiration      = 10 * time.Minute                          // 默认过期时间
+	DefaultMemStore = NewMemoryStore(GCLimitNumber, Expiration) // 默认内存存储器
 )
 
 // expValue存储验证码的时间戳和id。
@@ -46,10 +53,15 @@ func (s *memoryStore) Set(id string, value string) error {
 	return nil
 }
 
-// Verify 内存存储对象的校验方法
+// Verify TODO：内存存储对象的校验方法
 func (s *memoryStore) Verify(id, answer string, clear bool) bool {
 	v := s.Get(id, clear)
-	return v == answer
+
+	// 忽略大小写
+	flag := strings.ToUpper(v) == strings.ToUpper(answer)
+
+	// 返回
+	return flag
 }
 
 // Get 获取验证码答案

@@ -13,7 +13,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-//RandText 创建随机的文本
+// RandText 创建随机的文本
 func RandText(size int, sourceChars string) string {
 	if sourceChars == "" || size == 0 {
 		return ""
@@ -33,12 +33,12 @@ func RandText(size int, sourceChars string) string {
 	return string(text)
 }
 
-//Random 生成指定大小的随机数.
+// Random 生成指定大小的随机数.
 func random(min int64, max int64) float64 {
 	return float64(min) + rand.Float64()*float64(max-min)
 }
 
-//RandDeepColor 随机生成深色系.
+// RandDeepColor 随机生成深色系.
 func RandDeepColor() color.RGBA {
 
 	randColor := RandColor()
@@ -53,7 +53,7 @@ func RandDeepColor() color.RGBA {
 	return color.RGBA{R: uint8(red), G: uint8(green), B: uint8(blue), A: uint8(255)}
 }
 
-//RandLightColor 随机生成浅色.
+// RandLightColor 随机生成浅色.
 func RandLightColor() color.RGBA {
 	red := rand.Intn(55) + 200
 	green := rand.Intn(55) + 200
@@ -61,7 +61,7 @@ func RandLightColor() color.RGBA {
 	return color.RGBA{R: uint8(red), G: uint8(green), B: uint8(blue), A: uint8(255)}
 }
 
-//RandColor 生成随机颜色.
+// RandColor 生成随机颜色.
 func RandColor() color.RGBA {
 	red := rand.Intn(255)
 	green := rand.Intn(255)
@@ -84,9 +84,11 @@ func randIntRange(from, to int) int {
 	}
 	return rand.Intn(to-from) + from
 }
+
 func randFloat64Range(from, to float64) float64 {
 	return rand.Float64()*(to-from) + from
 }
+
 func randBytes(n int) []byte {
 	numBlocks := (n + 8 - 1) / 8
 	b := make([]byte, numBlocks*8)

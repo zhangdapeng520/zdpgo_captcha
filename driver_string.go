@@ -21,7 +21,7 @@ type DriverString struct {
 	fontsArray      []*truetype.Font
 }
 
-//NewDriverString 创建字符串驱动
+// NewDriverString 创建字符串驱动
 func NewDriverString(height int, width int, noiseCount int, showLineOptions int, length int, source string, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverString {
 	if fontsStorage == nil {
 		fontsStorage = DefaultEmbeddedFonts
@@ -40,7 +40,7 @@ func NewDriverString(height int, width int, noiseCount int, showLineOptions int,
 	return &DriverString{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, Length: length, Source: source, BgColor: bgColor, fontsStorage: fontsStorage, fontsArray: tfs}
 }
 
-//ConvertFonts 加载字体
+// ConvertFonts 加载字体
 func (d *DriverString) ConvertFonts() *DriverString {
 	if d.fontsStorage == nil {
 		d.fontsStorage = DefaultEmbeddedFonts
@@ -60,14 +60,14 @@ func (d *DriverString) ConvertFonts() *DriverString {
 	return d
 }
 
-//GenerateIdQuestionAnswer 创建ID，问题和答案
+// GenerateIdQuestionAnswer 创建ID，问题和答案
 func (d *DriverString) GenerateIdQuestionAnswer() (id, content, answer string) {
 	id = RandomId()
 	content = RandText(d.Length, d.Source)
 	return id, content, content
 }
 
-//DrawCaptcha 创建验证码
+// DrawCaptcha 创建验证码
 func (d *DriverString) DrawCaptcha(content string) (item Item, err error) {
 
 	var bgc color.RGBA

@@ -10,7 +10,7 @@ import (
 	"runtime"
 )
 
-//parseDigitsToString 解析随机数
+// parseDigitsToString 解析随机数
 func parseDigitsToString(bytes []byte) string {
 	stringB := make([]byte, len(bytes))
 	for idx, by := range bytes {
@@ -18,6 +18,7 @@ func parseDigitsToString(bytes []byte) string {
 	}
 	return string(stringB)
 }
+
 func stringToFakeByte(content string) []byte {
 	digits := make([]byte, len(content))
 	for idx, cc := range content {

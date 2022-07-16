@@ -14,8 +14,7 @@ type DriverDigit struct {
 }
 
 //NewDriverDigit 创建验证码数字驱动
-func NewDriverDigit(c CaptchaConfig) *DriverDigit {
-	cfg := GetDefaultCaptchaConfig(c)
+func NewDriverDigit(cfg CaptchaConfig) *DriverDigit {
 	return &DriverDigit{
 		Height:   cfg.Height,
 		Width:    cfg.Width,

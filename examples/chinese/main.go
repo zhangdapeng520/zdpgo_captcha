@@ -15,10 +15,10 @@ type configJsonBody struct {
 }
 
 var (
-	captcha = zdpgo_captcha.Default()
+	captcha = zdpgo_captcha.NewChinese()
 )
 
-// base64captcha create http handler
+// 生成验证码的处理器
 func generateCaptchaHandler(w http.ResponseWriter, r *http.Request) {
 	// 生成验证码
 	id, b64s, err := captcha.Generate()
@@ -36,7 +36,7 @@ func generateCaptchaHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(body)
 }
 
-// 校验验证码
+// 校验验证码的处理器
 func captchaVerifyHandle(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 	value := r.URL.Query().Get("value")

@@ -1,8 +1,7 @@
-package base64captcha
+package zdpgo_captcha
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
 	"image/color"
 	"math/rand"
 	"strings"
@@ -24,7 +23,7 @@ type DriverMath struct {
 
 //NewDriverMath 创建一个数学驱动
 //func NewDriverMath(height int, width int, noiseCount int, showLineOptions int, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverMath {
-func NewDriverMath(cfg config.CaptchaConfig) *DriverMath {
+func NewDriverMath(cfg CaptchaConfig) *DriverMath {
 	bgColor := color.RGBA{
 		R: cfg.BgColor.R,
 		G: cfg.BgColor.G,

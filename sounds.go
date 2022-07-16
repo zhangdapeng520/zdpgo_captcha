@@ -1,4 +1,4 @@
-package base64captcha
+package zdpgo_captcha
 
 // 生成.wav音频文件
 var waveHeader = []byte{

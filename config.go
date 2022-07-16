@@ -1,4 +1,4 @@
-package config
+package zdpgo_captcha
 
 // BackgroundColor 背景颜色
 type BackgroundColor struct {

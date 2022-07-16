@@ -1,7 +1,6 @@
-package base64captcha
+package zdpgo_captcha
 
 import (
-	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
 	"image/color"
 	"math/rand"
 	"strings"
@@ -25,7 +24,7 @@ type DriverChinese struct {
 
 //NewDriverChinese 创建中文验证码驱动
 //func NewDriverChinese(height int, width int, noiseCount int, showLineOptions int, length int, source string, bgColor *color.RGBA, fontsStorage FontsStorage, fonts []string) *DriverChinese {
-func NewDriverChinese(cfg config.CaptchaConfig) *DriverChinese {
+func NewDriverChinese(cfg CaptchaConfig) *DriverChinese {
 	tfs := []*truetype.Font{
 		DefaultEmbeddedFonts.LoadFontByName("fonts/wqy-microhei.ttc"),
 	}

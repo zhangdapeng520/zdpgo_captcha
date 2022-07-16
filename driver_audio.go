@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package base64captcha
+package zdpgo_captcha
 
 //DriverAudio 音频引擎
 type DriverAudio struct {

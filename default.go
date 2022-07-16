@@ -1,4 +1,4 @@
-package config
+package zdpgo_captcha
 
 // GetDefaultCaptchaConfig 获取默认的配置
 func GetDefaultCaptchaConfig(config CaptchaConfig) CaptchaConfig {

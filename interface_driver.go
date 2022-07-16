@@ -1,4 +1,4 @@
-package base64captcha
+package zdpgo_captcha
 
 // Driver 驱动器接口
 type Driver interface {

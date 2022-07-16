@@ -1,4 +1,4 @@
-package base64captcha
+package zdpgo_captcha
 
 // Store 存储器接口
 type Store interface {

@@ -2,12 +2,11 @@ package zdpgo_captcha
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
 	"testing"
 )
 
 func getCaptcha() *Captcha {
-	return New(config.CaptchaConfig{
+	return New(CaptchaConfig{
 		//DriverType: "math",
 		//DriverType: "chinese",
 		DriverType: "digit",

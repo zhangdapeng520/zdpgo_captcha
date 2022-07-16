@@ -1,60 +1,44 @@
 package zdpgo_captcha
 
 import (
-	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
-	"github.com/zhangdapeng520/zdpgo_captcha/libs/base64captcha"
+	"strings"
 )
 
+// Captcha 验证码基本信息
 type Captcha struct {
-	store   base64captcha.Store    // 验证码存储对象
-	config  *config.CaptchaConfig  // 配置对象
-	captcha *base64captcha.Captcha //验证码核心对象
-
-	// 方法区
-	Generate func() (id, b64s string, err error)
-	Verify   func(id, answer string, clear bool) bool
+	Driver Driver
+	Store  Store
 }
 
-// Default 使用默认配置生成验证码对象
-func Default() *Captcha {
-	return New(config.CaptchaConfig{})
+//NewCaptcha 创建验证码对象
+func NewCaptcha(driver Driver, store Store) *Captcha {
+	return &Captcha{Driver: driver, Store: store}
 }
 
-// New 创建新的验证码对象
-func New(cf config.CaptchaConfig) *Captcha {
-	c := Captcha{}
-
-	// 初始化配置
-	cfg := config.GetDefaultCaptchaConfig(cf)
-	c.config = &cfg
-
-	// 初始化存储器
-	switch c.config.StoreType {
-	case "memory":
-		c.store = base64captcha.DefaultMemStore
-	default:
-		c.store = base64captcha.DefaultMemStore
+//Generate 生成随机的ID，验证码图片的base64编码和错误
+func (c *Captcha) Generate() (id, b64s string, err error) {
+	id, content, answer := c.Driver.GenerateIdQuestionAnswer()
+	item, err := c.Driver.DrawCaptcha(content)
+	if err != nil {
+		return "", "", err
 	}
 
-	// 初始验证码对象
-	switch c.config.DriverType {
-	case "audio": // 音频验证码
-		driver := base64captcha.NewDriverAudio(6, "zh")
-		c.captcha = base64captcha.NewCaptcha(driver, c.store)
-	case "math": // 数学验证码
-		driver := base64captcha.NewDriverMath(cfg)
-		c.captcha = base64captcha.NewCaptcha(driver, c.store)
-	case "chinese": // 中文验证码
-		driver := base64captcha.NewDriverChinese(cfg)
-		c.captcha = base64captcha.NewCaptcha(driver, c.store)
-	default: // 数字验证码
-		driver := base64captcha.DefaultDriverDigit
-		c.captcha = base64captcha.NewCaptcha(driver, c.store)
+	// 存储id和正确的验证码
+	err = c.Store.Set(id, answer)
+
+	if err != nil {
+		return "", "", err
 	}
+	b64s = item.EncodeB64string()
+	return
+}
 
-	// 初始化方法
-	c.Generate = c.captcha.Generate
-	c.Verify = c.captcha.Store.Verify
+//Verify 通过给定的id键，并删除存储中的验证码值，返回一个布尔值
+// 如果您有多个验证码实例共享同一个存储，可以调用 `store.Verify` 方法
+func (c *Captcha) Verify(id, answer string, clear bool) (match bool) {
+	vv := c.Store.Get(id, clear)
 
-	return &c
+	// 修复了一些redis key-value字符串值的问题
+	vv = strings.TrimSpace(vv)
+	return vv == strings.TrimSpace(answer)
 }

@@ -1,4 +1,4 @@
-package base64captcha
+package zdpgo_captcha
 
 import (
 	"fmt"

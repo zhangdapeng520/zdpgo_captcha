@@ -1,7 +1,6 @@
-package base64captcha
+package zdpgo_captcha
 
 import (
-	"github.com/zhangdapeng520/zdpgo_captcha/core/config"
 	"math/rand"
 )
 
@@ -15,8 +14,8 @@ type DriverDigit struct {
 }
 
 //NewDriverDigit 创建验证码数字驱动
-func NewDriverDigit(c config.CaptchaConfig) *DriverDigit {
-	cfg := config.GetDefaultCaptchaConfig(c)
+func NewDriverDigit(c CaptchaConfig) *DriverDigit {
+	cfg := GetDefaultCaptchaConfig(c)
 	return &DriverDigit{
 		Height:   cfg.Height,
 		Width:    cfg.Width,
@@ -27,7 +26,7 @@ func NewDriverDigit(c config.CaptchaConfig) *DriverDigit {
 }
 
 //DefaultDriverDigit 默认的验证码数字驱动
-var DefaultDriverDigit = NewDriverDigit(config.CaptchaConfig{})
+var DefaultDriverDigit = NewDriverDigit(CaptchaConfig{})
 
 //GenerateIdQuestionAnswer 生成验证码的ID，问题和答案
 func (d *DriverDigit) GenerateIdQuestionAnswer() (id, q, a string) {
